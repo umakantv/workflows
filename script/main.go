@@ -13,28 +13,18 @@ func main() {
 	temporal.Init()
 
 	// Test the workflow with temporal
-	id := app.InitializeChangeRequest()
-
-	// id, err := repo.GetChangeRequestRepo().InitiateChangeRequest()
-	// if err != nil {
-	// 	log.Fatalln("Unable to initiate change request", err)
-	// }
-	// changeRequest, err := repo.GetChangeRequestRepo().GetChangeRequest(id)
-	// if err != nil {
-	// 	log.Fatalln("Unable to get change request", err)
-	// }
-	// log.Println("Change request", changeRequest)
+	id := app.GetCore().InitializeChangeRequest()
 
 	time.Sleep(5 * time.Second)
-	app.SubmitForReview(id)
+	app.GetCore().SubmitForReview(id)
 
 	time.Sleep(5 * time.Second)
-	log.Println("Change request status", app.GetChangeRequestStatus(id))
+	log.Println("Change request status", app.GetCore().GetChangeRequestStatus(id))
 
 	time.Sleep(5 * time.Second)
-	app.ApproveChangeRequest(id)
+	app.GetCore().ApproveChangeRequest(id)
 
 	time.Sleep(3 * time.Second)
-	log.Println("Change request status", app.GetChangeRequestStatus(id))
+	log.Println("Change request status", app.GetCore().GetChangeRequestStatus(id))
 
 }

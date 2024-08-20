@@ -12,7 +12,7 @@ func initiateChangeRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	InitializeChangeRequest()
+	GetCore().InitializeChangeRequest()
 
 	w.Write([]byte("Change request initiated"))
 	w.WriteHeader(http.StatusOK)
@@ -40,7 +40,7 @@ func submitForReviewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	SubmitForReview("1")
+	GetCore().SubmitForReview("1")
 
 	w.Write([]byte("Change request submitted for review"))
 }
@@ -50,7 +50,7 @@ func approveChangeRequestHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
-	ApproveChangeRequest("1")
+	GetCore().ApproveChangeRequest("1")
 }
 
 func rejectChangeRequestHandler(w http.ResponseWriter, r *http.Request) {
@@ -59,5 +59,5 @@ func rejectChangeRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	RejectChangeRequest("1")
+	GetCore().RejectChangeRequest("1")
 }
