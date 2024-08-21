@@ -7,6 +7,9 @@ var (
 )
 
 func InitClient() {
+	if temporalClient != nil {
+		return
+	}
 	var err error
 	temporalClient, err = client.NewLazyClient(client.Options{})
 	if err != nil {
