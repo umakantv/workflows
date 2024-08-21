@@ -11,6 +11,7 @@ import (
 func main() {
 
 	temporal.Init()
+	app.SetCore(app.NewCoreTemporal())
 
 	// Test the workflow with temporal
 	id := app.GetCore().InitializeChangeRequest()
