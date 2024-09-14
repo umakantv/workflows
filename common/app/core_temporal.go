@@ -13,12 +13,12 @@ import (
 )
 
 type CoreTemporal struct {
-	cadenceClient client.Client
+	temporalClient client.Client
 }
 
 func NewCoreTemporal() *CoreTemporal {
 	return &CoreTemporal{
-		cadenceClient: temporal.GetClient(),
+		temporalClient: temporal.GetClient(),
 	}
 }
 
@@ -40,7 +40,7 @@ func (core *CoreTemporal) InitializeChangeRequest() string {
 		WorkflowRunTimeout: time.Hour * 24 * 10,
 	}
 
-	we, err := core.cadenceClient.ExecuteWorkflow(
+	we, err := core.temporalClient.ExecuteWorkflow(
 		context.Background(), workflowOptions, workflow.ChangeRequestWorkflowV1, id)
 	if err != nil {
 		log.Fatalln("Unable to execute workflow", err)
@@ -75,7 +75,7 @@ func (core *CoreTemporal) SubmitForReview(id string) {
 		log.Fatalln("Unable to get change request", err)
 	}
 
-	err = core.cadenceClient.SignalWorkflow(
+	err = core.temporalClient.SignalWorkflow(
 		context.Background(), changeRequest.WorkflowID, changeRequest.RunID,
 		string(v1.ChangeRequestWorkflowEventV1SubmitForReview), nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func (core *CoreTemporal) ApproveChangeRequest(id string) {
 		log.Fatalln("Unable to get change request", err)
 	}
 
-	err = core.cadenceClient.SignalWorkflow(
+	err = core.temporalClient.SignalWorkflow(
 		context.Background(), changeRequest.WorkflowID, changeRequest.RunID,
 		string(v1.ChangeRequestWorkflowEventV1FinalReview), "approved")
 	if err != nil {
@@ -106,7 +106,7 @@ func (core *CoreTemporal) RejectChangeRequest(id string) {
 		log.Fatalln("Unable to get change request", err)
 	}
 
-	err = core.cadenceClient.SignalWorkflow(
+	err = core.temporalClient.SignalWorkflow(
 		context.Background(), changeRequest.WorkflowID, changeRequest.RunID,
 		string(v1.ChangeRequestWorkflowEventV1FinalReview), "rejected")
 	if err != nil {
